@@ -3,6 +3,7 @@ import MatrizSize from './MatrizSize';
 import './App.css';
 
 function App() {
+  // Definición de los estados para las matrices A y B, el resultado, la operación seleccionada, y las profundidades de las matrices
   const [matrixA, setMatrixA] = useState<number[][][]>([[[0]]]);
   const [matrixB, setMatrixB] = useState<number[][][]>([[[0]]]);
   const [result, setResult] = useState<number[][][] | null>(null);
@@ -11,6 +12,7 @@ function App() {
   const [depthA, setDepthA] = useState<number>(1);
   const [depthB, setDepthB] = useState<number>(1);
 
+  // Función para manejar cambios en los valores de las matrices
   const handleMatrixChange = (
     matrix: number[][][],
     setMatrix: React.Dispatch<React.SetStateAction<number[][][]>>,
@@ -24,6 +26,7 @@ function App() {
     setMatrix(updatedMatrix);
   };
 
+  // Función para cambiar el tamaño de la matriz A
   const handleMatrixASizeChange = (rows: number, cols: number) => {
     const newMatrixA = Array.from({ length: depthA }, () =>
       Array.from({ length: rows }, () => Array(cols).fill(0))
@@ -31,6 +34,7 @@ function App() {
     setMatrixA(newMatrixA);
   };
 
+  // Función para cambiar el tamaño de la matriz B
   const handleMatrixBSizeChange = (rows: number, cols: number) => {
     const newMatrixB = Array.from({ length: depthB }, () =>
       Array.from({ length: rows }, () => Array(cols).fill(0))
@@ -38,6 +42,7 @@ function App() {
     setMatrixB(newMatrixB);
   };
 
+  // Función para manejar el cambio de la profundidad de las matrices
   const handleDepthChange = (matrix: 'A' | 'B', depth: number) => {
     if (matrix === 'A') {
       setDepthA(depth);
@@ -48,11 +53,13 @@ function App() {
     }
   };
 
+  // Función para manejar la selección de la operación
   const handleOperationClick = (op: string) => {
     setOperation(op);
     performOperation(op);
   };
 
+  // Función que realiza la operación seleccionada
   const performOperation = (op: string) => {
     if (!matrixA.length || !matrixB.length) return;
     if (op === '+') {
@@ -64,10 +71,11 @@ function App() {
     }
   };
 
+  // Función para sumar matrices
   const addMatrices = (a: number[][][], b: number[][][]): number[][][] => {
-    // Ensure matrices have the same dimensions for addition
+    // Asegurarse de que las matrices tengan las mismas dimensiones para la suma
     if (!areDimensionsEqual(a, b)) {
-      alert('Matrices must have the same dimensions for addition.');
+      alert('Las matrices deben tener las mismas dimensiones para sumar.');
       return [];
     }
     return a.map((layer, i) =>
@@ -77,10 +85,11 @@ function App() {
     );
   };
 
+  // Función para restar matrices
   const subtractMatrices = (a: number[][][], b: number[][][]): number[][][] => {
-    // Ensure matrices have the same dimensions for subtraction
+    // Asegurarse de que las matrices tengan las mismas dimensiones para la resta
     if (!areDimensionsEqual(a, b)) {
-      alert('Matrices must have the same dimensions for subtraction.');
+      alert('Las matrices deben tener las mismas dimensiones para restar.');
       return [];
     }
     return a.map((layer, i) =>
@@ -90,31 +99,35 @@ function App() {
     );
   };
 
+  // Función (placeholder) para multiplicar matrices
   const multiplyMatrices = (a: number[][][], b: number[][][]): number[][][] => {
-    // Implement matrix multiplication logic
-    // Here, a basic example assuming the matrices are of compatible sizes
-    return a; // Replace with actual multiplication logic
+    // Implementar la lógica de multiplicación de matrices
+    return a; // Reemplazar con la lógica real
   };
 
+  // Función para comprobar si las dimensiones de las matrices son iguales
   const areDimensionsEqual = (a: number[][][], b: number[][][]): boolean => {
     return a.length === b.length &&
            a[0].length === b[0].length &&
            a[0][0].length === b[0][0].length;
   };
 
+  // Función para manejar el clic en el botón de matriz 3D
   const handle3DMatrixClick = () => {
     handleDepthChange('A', 3);
     handleDepthChange('B', 3);
   };
 
+  // Funciones (placeholder) para calcular determinante e inversa
   const calculateDeterminant = () => {
-    // Implement determinant calculation
+    // Implementar el cálculo del determinante
   };
 
   const calculateInverse = () => {
-    // Implement inverse calculation
+    // Implementar el cálculo de la inversa
   };
 
+  // Función para limpiar los datos de las matrices y reiniciar el estado
   const handleClearClick = () => {
     setMatrixA([[[0]]]);
     setMatrixB([[[0]]]);
@@ -124,14 +137,16 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Matrix Calculator</h1>
+      <h1>Calculadora de Matrices</h1>
 
-      <MatrizSize label="Matrix A Size" onSizeChange={handleMatrixASizeChange} />
-      <MatrizSize label="Matrix B Size" onSizeChange={handleMatrixBSizeChange} />
+      {/* Componente para cambiar el tamaño de la matriz A */}
+      <MatrizSize label="Tamaño Matriz A" onSizeChange={handleMatrixASizeChange} />
+      {/* Componente para cambiar el tamaño de la matriz B */}
+      <MatrizSize label="Tamaño Matriz B" onSizeChange={handleMatrixBSizeChange} />
 
       <div className="depth-container">
         <div>
-          <h3>Matrix A Depth</h3>
+          <h3>Profundidad de Matriz A</h3>
           <input
             type="number"
             min="1"
@@ -140,7 +155,7 @@ function App() {
           />
         </div>
         <div>
-          <h3>Matrix B Depth</h3>
+          <h3>Profundidad de Matriz B</h3>
           <input
             type="number"
             min="1"
@@ -150,11 +165,12 @@ function App() {
         </div>
       </div>
 
+      {/* Renderizar la matriz A */}
       <div className="matrix-container">
-        <h3>Matrix A</h3>
+        <h3>Matriz A</h3>
         {matrixA.map((layer, layerIndex) => (
           <div key={layerIndex} className="matrix-layer">
-            <h4>Layer {layerIndex + 1}</h4>
+            <h4>Capa {layerIndex + 1}</h4>
             {layer.map((row, rowIndex) => (
               <div key={rowIndex}>
                 {row.map((value, colIndex) => (
@@ -173,11 +189,12 @@ function App() {
         ))}
       </div>
 
+      {/* Renderizar la matriz B */}
       <div className="matrix-container">
-        <h3>Matrix B</h3>
+        <h3>Matriz B</h3>
         {matrixB.map((layer, layerIndex) => (
           <div key={layerIndex} className="matrix-layer">
-            <h4>Layer {layerIndex + 1}</h4>
+            <h4>Capa {layerIndex + 1}</h4>
             {layer.map((row, rowIndex) => (
               <div key={rowIndex}>
                 {row.map((value, colIndex) => (
@@ -196,29 +213,32 @@ function App() {
         ))}
       </div>
 
+      {/* Botones para seleccionar operaciones */}
       <div className="operations">
         <button onClick={() => handleOperationClick('+')}>+</button>
         <button onClick={() => handleOperationClick('-')}>-</button>
         <button onClick={() => handleOperationClick('*')}>*</button>
-        <button onClick={handleClearClick}>Clear</button>
+        <button onClick={handleClearClick}>Limpiar</button>
       </div>
 
+      {/* Operaciones adicionales */}
       <div className="extra-operations">
-        <button onClick={calculateDeterminant}>Determinant</button>
-        <button onClick={calculateInverse}>Inverse</button>
-        <button onClick={handle3DMatrixClick}>3D Matrix</button>
+        <button onClick={calculateDeterminant}>Determinante</button>
+        <button onClick={calculateInverse}>Inversa</button>
+        <button onClick={handle3DMatrixClick}>Matriz 3D</button>
       </div>
 
+      {/* Mostrar el resultado */}
       {result && (
-        <div className="result">
-          <h3>Result</h3>
+        <div className="matrix-container">
+          <h3>Resultado</h3>
           {result.map((layer, layerIndex) => (
             <div key={layerIndex} className="matrix-layer">
-              <h4>Layer {layerIndex + 1}</h4>
+              <h4>Capa {layerIndex + 1}</h4>
               {layer.map((row, rowIndex) => (
                 <div key={rowIndex}>
                   {row.map((value, colIndex) => (
-                    <input key={colIndex} type="text" value={value} readOnly />
+                    <input key={colIndex} type="number" value={value} readOnly />
                   ))}
                 </div>
               ))}
